@@ -57,6 +57,7 @@ function initImg(pinchImg) {
 let prevImg = null
 let imgNodeList = []
 function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
+  const [issp, setissp] = useState(dataStore.getItem('issp'))
   const [isshow, setisshow] = useState(false)
   const [txt, settxt] = useState('')
   const [swiper, setswiper] = useState(null)
@@ -78,7 +79,7 @@ function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
     const arr = []
     for (let i = 0; i < chapterItem.maxPageCount; i += 1) {
       arr.push(
-        <SwiperSlide key={i} virtualIndex={i}>
+        issp ? (
           <img
             src={`${path}${bigType}/${showType}/${name}/${chapterItem.title}/${
               i + 1
@@ -86,7 +87,17 @@ function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
             // src="https://cn.bing.com/rp/gU1TnhYp8KRlyEcs6qC0ERe8GJY.png"
             alt="没图嘛"
           />
-        </SwiperSlide>
+        ) : (
+          <SwiperSlide key={i} virtualIndex={i}>
+            <img
+              src={`${path}${bigType}/${showType}/${name}/${
+                chapterItem.title
+              }/${i + 1}.${chapterItem.bgType || bgType}`}
+              // src="https://cn.bing.com/rp/gU1TnhYp8KRlyEcs6qC0ERe8GJY.png"
+              alt="没图嘛"
+            />
+          </SwiperSlide>
+        )
       )
     }
     console.log(
@@ -96,7 +107,7 @@ function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
       }`
     )
     return arr
-  }, [mgItem, chapterItem])
+  }, [mgItem, chapterItem, issp])
   function init(slide, isrealinit) {
     console.log('idx', getMangaIndex(mgItem))
     if (getMangaIndex(mgItem)) {
@@ -130,52 +141,72 @@ function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
           // console.log()
         }}
       >
-        <Swiper
-          modules={[Virtual, Controller]}
-          onSlideChange={(slide) => {
-            setTimeout(() => {
-              if (!slide.visibleSlides || !slide.visibleSlides[0]) {
-                return
-              }
-              const img = slide.visibleSlides[0].querySelector('img')
-              if (!imgNodeList[slide.activeIndex]) {
-                imgNodeList[slide.activeIndex] = initImg(img)
-              }
-              prevImg = imgNodeList[slide.activeIndex]
-              console.log('img', slide.activeIndex)
-              setMangaIndex(mgItem, slide.activeIndex)
-              setcurrentPage(slide.activeIndex)
-            }, 100)
-          }}
-          onInit={(e) => {
-            console.log('init', e)
-            init(e, true)
-          }}
-          virtual
-          onSwiper={(e) => {
-            setswiper(e)
-            init(e)
-          }}
-          controller={{ control: swiper }}
-        >
-          {slides}
-        </Swiper>
+        {issp ? (
+          <div className="sp-img-ctn">{slides}</div>
+        ) : (
+          <Swiper
+            modules={[Virtual, Controller]}
+            onSlideChange={(slide) => {
+              setTimeout(() => {
+                if (!slide.visibleSlides || !slide.visibleSlides[0]) {
+                  return
+                }
+                const img = slide.visibleSlides[0].querySelector('img')
+                if (!imgNodeList[slide.activeIndex]) {
+                  imgNodeList[slide.activeIndex] = initImg(img)
+                }
+                prevImg = imgNodeList[slide.activeIndex]
+                console.log('img', slide.activeIndex)
+                setMangaIndex(mgItem, slide.activeIndex)
+                setcurrentPage(slide.activeIndex)
+              }, 100)
+            }}
+            onInit={(e) => {
+              console.log('init', e)
+              init(e, true)
+            }}
+            virtual
+            onSwiper={(e) => {
+              setswiper(e)
+              init(e)
+            }}
+            controller={{ control: swiper }}
+          >
+            {slides}
+          </Swiper>
+        )}
       </div>
       <div className={'tool-wrapper bottom ' + (isshow ? 'show' : 'hide')}>
-        <span className="pagepagation">
-          <span>{currentPage + 1}</span>/<span>{chapterItem.maxPageCount}</span>
-        </span>
-        <Input
-          id="jumpage"
-          placeholder="请输入跳转的页码"
-          onChange={(e) => settxt(e.target.value)}
-        />
-        <Button onClick={jumpPage}>确定</Button>
+        {!issp && (
+          <>
+            <span className="pagepagation">
+              <span>{currentPage + 1}</span>/
+              <span>{chapterItem.maxPageCount}</span>
+            </span>
+
+            <Input
+              id="jumpage"
+              placeholder="请输入跳转的页码"
+              onChange={(e) => settxt(e.target.value)}
+            />
+            <Button onClick={jumpPage}>确定</Button>
+          </>
+        )}
         {/* <a className="yued" onClick={onJumpChapter}>
           返回到章节列表
         </a> */}
         <Button variant="text" onClick={onClose}>
           返回
+        </Button>
+        <Button
+          variant="text"
+          onClick={() => {
+            const f = !issp
+            dataStore.setItem('issp', f)
+            setissp(f)
+          }}
+        >
+          切换到{issp ? '横屏' : '竖屏'}模式
         </Button>
       </div>
     </>
