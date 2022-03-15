@@ -27,7 +27,7 @@ function MgDetailCtn(props) {
             showType,
             id,
           })
-          setlist(res.list)
+          setlist(res.list.filter((it) => !it.disabled))
         })
     }
   }, [bigType, showType, id])

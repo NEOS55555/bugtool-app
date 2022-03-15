@@ -84,11 +84,17 @@ function ImgPreview({ mgItem, chapterItem, onClose, onJumpChapter }) {
               i + 1
             }.${chapterItem.bgType || bgType}`}
             // src="https://cn.bing.com/rp/gU1TnhYp8KRlyEcs6qC0ERe8GJY.png"
-            alt=""
+            alt="没图嘛"
           />
         </SwiperSlide>
       )
     }
+    console.log(
+      'arr',
+      `${path}${bigType}/${showType}/${name}/${chapterItem.title}/${1}.${
+        chapterItem.bgType || bgType
+      }`
+    )
     return arr
   }, [mgItem, chapterItem])
   function init(slide, isrealinit) {

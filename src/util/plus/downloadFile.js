@@ -8,7 +8,7 @@ export function getDownloadPath(path = '') {
 }
 
 function dowloadfile(fileurl, dirpath) {
-  console.log('fileurl', fileurl, dirpath)
+  console.log('fileurl', fileurl)
   return new Promise((resolve, reject) => {
     var dtask = window.plus.downloader.createDownload(
       fileurl,
@@ -145,12 +145,13 @@ function downloadChapterItem(option) {
                 onlyFile: true,
                 getMap: true,
               }).then((filesaa) => {
+                console.log('filesaa', JSON.stringify(filesaa))
                 apiAxios
                   .getfiles({
                     params: { path: mgOutput + '/' + title },
                   })
                   .then((res1) => {
-                    // console.log(JSON.stringify(res))
+                    console.log('res1', JSON.stringify(res1))
                     if (res1.success) {
                       const { files } = res1
                       for (let i = 0, len = files.length; i < len; i++) {
