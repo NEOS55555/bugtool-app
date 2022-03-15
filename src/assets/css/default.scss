@@ -1,0 +1,35 @@
+$errorColor: #f55; // 错误报警颜色
+$borderColor: rgb(96, 100, 109);
+$shadowColor: #95c3e8;
+$shadowDarkColor: #484545;
+$fontColor: #fff;
+$subTextColor: #ccc;
+$strongTipColor: #fa1414;
+$disabledTextColor: #ccc;
+$titleFontColor: rgba(255, 255, 255, 0.7);
+$titleFontSize: 16px;
+$hoverHighlightColor: #40a9ff;
+$normalBlue: #1890ff;
+$disableBlue: rgba(112, 165, 214, 0.7);
+$hoverBlue: #40a9ff;
+$modalBgColor: rgba(5, 6, 8, 0.85);
+// $modalBgColor: #000;
+
+$hoverWhiteColor: rgba(255, 255, 255, 0.7);
+$listHoverBgColor: rgba(64, 169, 255, 0.28);
+$listActiveBgColor: rgba(64, 169, 255, 0.5);
+$boxShadow: 1px 1px 11px #ccc;
+$boxActiveShadow: 1px 1px 11px $normalBlue;
+
+@function getSmallShadow($color) {
+  @return 0 0 11px 0 $color;
+}
+@function getMiddleShadow($color) {
+  @return 0 0 34px 0 $color;
+}
+@function getBigShadow($color) {
+  @return 0 0 94px 0 $color;
+}
+
+$leftBarWidth: 240px;
+$headerHeight: 52px;

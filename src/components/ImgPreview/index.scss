@@ -1,0 +1,101 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.mySwiper {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.img-ctn,
+.swiper-slide {
+  text-align: center;
+  font-size: 0;
+  background: #000;
+  color: aqua;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  /* width: auto; */
+  height: auto;
+  /* height: 100%; */
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.tool-wrapper {
+  position: absolute;
+  font-size: 16px;
+  color: #fff;
+  z-index: 2;
+  background-color: #000;
+  // display: none;
+}
+
+#jumpage {
+  color: #fff;
+  margin-left: 8vw;
+  width: 5vw;
+}
+.bottom {
+  bottom: 0;
+}
+
+.top {
+  top: 0;
+}
+
+.tool-wrapper.top {
+  width: 100%;
+}
+
+.tool-wrapper.right {
+  right: 0;
+  height: 70px;
+  width: 120px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.title,
+.yued {
+  color: #fff;
+}
+.tool-wrapper {
+  .MuiButton-textPrimary,
+  #jumpage,
+  .yued,
+  button,
+  input,
+  .title,
+  .pagepagation {
+    font-size: 4vw;
+  }
+}
+
+.title {
+  line-height: 1;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}

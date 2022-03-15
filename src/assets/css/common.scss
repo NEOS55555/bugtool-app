@@ -1,0 +1,38 @@
+.error {
+  color: $errorColor;
+}
+.link-a {
+  color: $normalBlue;
+}
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.link-btn {
+  color: $normalBlue;
+  cursor: pointer;
+}
+.search-wrapper {
+  display: flex;
+  margin-bottom: 15px;
+  .search-item {
+    margin-right: 15px;
+  }
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-wrapper {
+  height: calc(100% - 56px);
+}
+
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
