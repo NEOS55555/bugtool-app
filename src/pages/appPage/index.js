@@ -15,7 +15,6 @@ import {
 } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
 import './index.scss'
-import MgDetail from './MgDetail'
 
 function AppPage() {
   const [tabval, settabval] = useState(showList[0].key)
@@ -57,28 +56,7 @@ function AppPage() {
                 )
               }}
             >
-              {it.cover ? (
-                <img
-                  className="cover"
-                  src={it.cover}
-                  onError={() => {
-                    setlist(
-                      list.map((itm) => {
-                        if (it.id === itm.id) {
-                          return {
-                            ...itm,
-                            cover: '',
-                          }
-                        }
-                        return itm
-                      })
-                    )
-                  }}
-                  alt=""
-                />
-              ) : (
-                <div className="no-cover">{it.name}</div>
-              )}
+              <div className="no-cover">{it.name}</div>
             </div>
             <div className="ellipsis name" title={it.name}>
               {it.name}

@@ -2,10 +2,10 @@
 // const sotrg = localStorage
 // const sotrg = plus.storage
 // plus.storage
-/* if (!window.plus) {
+if (!window.plus) {
   window.plus = {}
   window.plus.storage = localStorage
-} */
+}
 export class PlusStorage {
   constructor(name) {
     this.name = ''
