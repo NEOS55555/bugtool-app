@@ -15,21 +15,22 @@ function downloadManga(mgdata, cb, execCount = 0) {
   // return
   execFnloop((next, count) => {
     if (count > list.length) {
-      if (list.filter((it) => !it.isOver).length === 0) {
+      console.log('全部下载完成了')
+      cb({
+        success: true,
+      })
+      /* if (list.filter((it) => !it.isAppOver).length === 0) {
         // 全部下载完成
-        console.log('全部下载完成了')
-        cb({
-          success: true,
-        })
+        
       } else {
         console.log('还有剩的')
         downloadManga(mgdata, cb, execCount + 1)
-      }
+      } */
       return
     }
     var pageIndex = count - 1
     const mgcptItem = list[pageIndex]
-    if (mgcptItem.isOver) {
+    if (mgcptItem.isAppOver) {
       next()
       return
     }
@@ -38,9 +39,9 @@ function downloadManga(mgdata, cb, execCount = 0) {
       } else {
         // 有缺页，那也没法啊
       }
-      mgdata.list[pageIndex].isOver = true
+      mgdata.list[pageIndex].isAppOver = true
       dataStore.setData(
-        [bigType, showType, id, 'list', pageIndex, 'isOver'],
+        [bigType, showType, id, 'list', pageIndex, 'isAppOver'],
         true
       )
       next()

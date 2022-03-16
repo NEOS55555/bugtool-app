@@ -3,6 +3,7 @@ import { Button, SwipeableDrawer } from '@mui/material'
 import { getPageIndex, setPageIndex } from '@/util/record'
 import apiAxios from '@/api'
 import { withRouter } from 'react-router-dom'
+import dataStore from '@/util/plus/store'
 
 function MgDetailCtn(props) {
   const [open, setopen] = useState(false)
@@ -10,6 +11,7 @@ function MgDetailCtn(props) {
   const [mgItem, setmgItem] = useState({})
   const { bigType, showType, id } = props.match.params
   useEffect(() => {
+    // console.log('rr', dataStore.getData([bigType, showType, id, 'list']))
     if (bigType && showType && id) {
       apiAxios
         .getOneDetail({
@@ -27,7 +29,8 @@ function MgDetailCtn(props) {
             showType,
             id,
           })
-          setlist(res.list.filter((it) => !it.disabled))
+          setlist(dataStore.getData([bigType, showType, id, 'list']))
+          // setlist(res.list.filter((it) => !it.disabled && it.isAppOver))
         })
     }
   }, [bigType, showType, id])

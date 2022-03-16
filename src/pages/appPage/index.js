@@ -4,6 +4,7 @@ import ImgPreview from '@/components/ImgPreview'
 import message from '@/components/message'
 import { showList } from '@/constant/showList'
 import { eventBus } from '@/util/eventBus'
+import { downloadMangaByList } from '@/util/plus/download'
 import { deleteDir } from '@/util/plus/downloadFile'
 import dataStore from '@/util/plus/store'
 import { setPageIndex } from '@/util/record'
@@ -87,6 +88,15 @@ function AppPage() {
                 }}
               >
                 删除
+              </Button>
+            </div>
+            <div>
+              <Button
+                onClick={() => {
+                  downloadMangaByList(it)
+                }}
+              >
+                继续下载
               </Button>
             </div>
           </li>

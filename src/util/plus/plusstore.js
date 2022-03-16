@@ -1,8 +1,11 @@
 // 数据存储
 // const sotrg = localStorage
 // const sotrg = plus.storage
+
+import { IS_WEB_TEST } from '@/constant/compy'
+
 // plus.storage
-if (!window.plus) {
+if (IS_WEB_TEST) {
   window.plus = {}
   window.plus.storage = localStorage
 }

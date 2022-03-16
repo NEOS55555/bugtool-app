@@ -23,7 +23,7 @@ function MgDetail({ mgItem, closeCb }) {
     })
     mgItem.list.forEach((it) => {
       it.isInDownload = !!map[it.url]
-      it.isOver = (map[it.url] || {}).isOver
+      it.isOver = (map[it.url] || {}).isAppOver
     })
     // console.log('list', mgItem.list)
 
@@ -136,10 +136,7 @@ function MgDetail({ mgItem, closeCb }) {
           downloadMangaByList(mgdata).then((res) => {
             console.log('downloadMangaByList', JSON.stringify(res))
             if (res.success) {
-              message.show({
-                type: 'success',
-                content: '下载成功',
-              })
+              alert('下载成功')
             } else {
               message.show({
                 type: 'error',

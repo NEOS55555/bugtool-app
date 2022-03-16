@@ -1,4 +1,2 @@
-export const DAY_SITE_COUNT = 3
-export const MAX_SITE_TITLE = 70
-export const MAX_SITE_CONTENT = 300
-export const MAX_COMMIT_LEN = 150
+export const IS_WEB_TEST = false
+export const DOWNLOAD_MAX_COUNT = 10

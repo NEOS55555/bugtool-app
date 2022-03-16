@@ -1,4 +1,6 @@
 import apiAxios from '@/api'
+import { DOWNLOAD_MAX_COUNT, IS_WEB_TEST } from '@/constant/compy'
+import { execFnloop } from '../lib'
 
 export function getDownloadPath(path = '') {
   if (!window.plus.io) {
@@ -40,6 +42,12 @@ function dowloadfile(fileurl, dirpath) {
 }
 function deleteDir(dirpath) {
   return new Promise((resolve, reject) => {
+    if (IS_WEB_TEST) {
+      return resolve({
+        success: true,
+        dirpath: dirpath,
+      })
+    }
     window.plus.io.requestFileSystem(
       window.plus.io.PUBLIC_DOWNLOADS,
       function (entry) {
@@ -122,10 +130,12 @@ function downloadChapterItem(option) {
   } = option
   console.log('mgcptItem', option)
   return new Promise((resolve, reject) => {
-    /* return resolve({
-      success: true,
-      code: 200,
-    }) */
+    if (IS_WEB_TEST) {
+      return resolve({
+        success: true,
+        code: 200,
+      })
+    }
     const { maxPageCount, title, bgType } = mgcptItem
     createDir('_downloads/' + bigType).then((res) => {
       createDir(res.dirpath + '/' + showType).then((res) => {
@@ -133,63 +143,63 @@ function downloadChapterItem(option) {
           createDir(res.dirpath + '/' + title).then((res) => {
             console.log('下载文件')
             // 开始下载了
-            function redexc(cb, execCount = 0) {
-              if (execCount >= 1) {
-                return cb({
-                  success: false,
-                  info: '超过检测最大次数',
+            readFiles(res.dirpath, {
+              onlyFile: true,
+              getMap: true,
+            }).then((filesaa) => {
+              console.log('filesaa', JSON.stringify(filesaa))
+              apiAxios
+                .getfiles({
+                  params: { path: mgOutput + '/' + title },
                 })
-              }
-              const promisearr = []
-              readFiles(res.dirpath, {
-                onlyFile: true,
-                getMap: true,
-              }).then((filesaa) => {
-                console.log('filesaa', JSON.stringify(filesaa))
-                apiAxios
-                  .getfiles({
-                    params: { path: mgOutput + '/' + title },
-                  })
-                  .then((res1) => {
-                    console.log('res1', JSON.stringify(res1))
-                    if (res1.success) {
-                      const { files } = res1
-                      for (let i = 0, len = files.length; i < len; i++) {
-                        // const pigname = `${i + 1}.${bgType || defbgType}`
-                        const pigname = files[i]
-                        if (!filesaa.map[pigname]) {
-                          promisearr.push(
-                            dowloadfile(
-                              `${window.SERVER_ADDRESS}/file?c=image/jpeg&path=${mgOutput}/${title}/${pigname}`,
-                              res.dirpath + '/' + pigname
-                            )
-                            /* dowloadfile(
-                              `${window.SERVER_ADDRESS}/file?c=image/jpeg&path=${mgOutput}/${title}/${pigname}`,
-                              res.dirpath + '/' + pigname
-                            ) */
-                          )
-                        }
-                      }
-                      if (promisearr.length > 0) {
-                        Promise.all(promisearr).then((res) => {
-                          redexc(cb, execCount + 1)
-                        })
-                      } else {
-                        cb({
+                .then((res1) => {
+                  console.log('res1', JSON.stringify(res1))
+                  if (res1.success) {
+                    let { files } = res1
+                    files = files.filter((filename) => !filesaa.map[filename])
+                    const fillen = files.length
+                    const downloadMaxCount = DOWNLOAD_MAX_COUNT
+                    const execCount = Math.ceil(fillen / downloadMaxCount)
+                    execFnloop((next, count) => {
+                      if (count >= execCount) {
+                        resolve({
                           success: true,
                           code: 200, // 全部下载完了
                         })
+                        return
                       }
-                    }
-                  })
-                  .catch((err) => {
-                    cb({ success: false, info: '检测问题' })
-                  })
-              })
-            }
-
-            redexc((res) => {
-              resolve(res)
+                      const countIndex = count - 1
+                      const posarr = []
+                      const lis = files.slice(
+                        downloadMaxCount * countIndex,
+                        downloadMaxCount * count
+                      )
+                      for (let i = 0; i < lis.length; i++) {
+                        const pigname = lis[i]
+                        posarr.push(
+                          dowloadfile(
+                            `${window.SERVER_ADDRESS}/file?c=image/jpeg&path=${mgOutput}/${title}/${pigname}`,
+                            res.dirpath + '/' + pigname
+                          )
+                        )
+                      }
+                      if (posarr.length > 0) {
+                        Promise.all(posarr).then((res) => {
+                          setTimeout(() => {
+                            next()
+                          }, 800)
+                        })
+                      } else {
+                        setTimeout(() => {
+                          next()
+                        }, 800)
+                      }
+                    })
+                  }
+                })
+                .catch((err) => {
+                  resolve({ success: false, info: '检测问题' })
+                })
             })
           })
         })
